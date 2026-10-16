@@ -27,13 +27,14 @@ background: /assets/tracks-photo.jpeg
 
 <div class="mt-6 opacity-90">
 Mathias Vanden Auweele · on behalf of Bane NOR<br>
+<span class="text-sm">The work presented was done for ERA</span><br>
 <span class="text-sm">RNE Ontology Task Force · 27 October 2026</span>
 </div>
 
 </div>
 
 <!--
-Agenda item 3. I built the converter and the first pipeline, so I'll explain how the conversion was done: XSD to SHACL to OWL, and what happens after.
+Agenda item 3. Today I represent Bane NOR, but the work I present was done for ERA: I built the converter and the first pipeline, so I'll explain how the conversion was done: XSD to SHACL to OWL, and what happens after.
 One message to keep in mind: a converter can only translate what the XSD says. It cannot add meaning the XSD never had.
 -->
 
@@ -113,30 +114,34 @@ Simplified, but this is the real type from the TAF TSI XSD and the real mapping 
 
 # The assumptions the converter makes
 
-<div class="rosetta">
+<div class="rosetta tight">
 
-| In the XSD … | … the converter assumes | |
-|---|---|---|
-| an element's **name** | is the **concept's name**. The IRI comes from the name only, not from where it is used | 🟠 |
-| an element with sub-elements | is a **class** | 🟢 |
-| an element with a plain value | is a **datatype property** (a value) | 🟢 |
-| an element pointing to a complex type | is an **object property** (a link to another thing) | 🟢 |
-| `extension base="X"` | means **"is a kind of X"** (subclass) | 🟠 |
-| `minOccurs` / `maxOccurs` | are **cardinality rules**; "max 1 everywhere" also makes it **functional** | 🟢 |
-| an enumeration | is a **SKOS code list** | 🟢 |
-| `xs:choice` | means **exactly one of** (`sh:xone`) | 🟢 |
-| `xs:documentation` | is the **definition**; the label is the name split on capitals | 🟠 |
-| one name under several parents | has **all those parents** as its domain | 🟠 |
-| a property whose kind can't be found | is a **datatype property** by default | 🟠 |
-| one name, once a value, once a link | gets a **DP / OP suffix** to keep the two apart | 🟠 |
+| In the XSD … | … the converter assumes | … but it could also mean | |
+|---|---|---|---|
+| an element's **name** | is the **concept's name** (IRI from the name only) | one concept with two names (slide 9) | 🟠 |
+| an element with sub-elements | is a **class** | | 🟢 |
+| an element with a plain value | is a **datatype property** | | 🟢 |
+| an element of a complex type | is an **object property** | | 🟢 |
+| `extension base="X"` | means **"is a kind of X"** | "reuse the fields of X": an origin is not a kind of location | 🟠 |
+| `minOccurs` / `maxOccurs` | are **cardinality**; max 1 everywhere = **functional** | | 🟢 |
+| an enumeration | is a **new SKOS code list** | values of a code list that already exists in ERA | 🟠 |
+| `xs:choice` | means **exactly one of** (`sh:xone`) | | 🟢 |
+| `xs:documentation` | is the **definition**; label = name split on capitals | a usage note for this message, not a definition | 🟠 |
+| one name under several parents | has **all those parents** as domain | a different concept per parent | 🟠 |
+| a property whose kind can't be found | is a **datatype property** | a link to another thing | 🟠 |
+| one name, once a value, once a link | gets a **DP / OP suffix** | two concepts that only share a word | 🟠 |
 
 </div>
 
-<div v-click class="card warn-card mt-3">Every 🟠 row assumes the XSD author <b>named things after what they are</b>, used <b>one name per concept</b>, and used <b>extension only for "is a"</b>. XSDs are written to validate messages, not to describe the world.</div>
+<div v-click class="card warn-card mt-2 text-sm">Every 🟠 row assumes the XSD author <b>named things after what they are</b>, used <b>one name per concept</b>, and used <b>extension only for "is a"</b>. XSDs are written to validate messages, not to describe the world.</div>
+
+<style>
+.rosetta.tight td, .rosetta.tight th { padding: 0.2rem 0.45rem !important; }
+</style>
 
 <!--
 Green rows are safe: they follow from the XSD's own semantics.
-Amber rows are guesses about the author's intention. They hold when the XSD is well designed. The next slides show what happens when they don't.
+Amber rows are guesses about the author's intention; the third column shows a reading that is just as plausible. For enumerations we always create a new SKOS list today, even when the values belong in an existing ERA code list. They hold when the XSD is well designed. The next slides show what happens when they don't.
 Source: xsd2rdf utils.py (create_property_iri_suffix, create_class_iri_suffix, create_formatted_label) and XSDtoRDF.py (generate_owl_graph).
 -->
 
@@ -297,7 +302,7 @@ class: text-center
 
 <div class="text-left text-lg leading-relaxed mt-8 inline-block">
 
-Mathias Vanden Auweele · Bane NOR<br>
+Mathias Vanden Auweele · Bane NOR (work done for ERA)<br>
 <a href="mailto:mathias.vanden.auweele@banenor.no">mathias.vanden.auweele@banenor.no</a>
 
 <div class="mt-6 text-base">

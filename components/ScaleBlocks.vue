@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{ step?: number }>(), { step: 0 })
 const s = computed(() => Math.max(0, Math.min(2, props.step)))
 
 const parts = [
-  { id: 'core', name: 'ERA core', sub: 'RINF, ERATV, … · hand-made', classes: 128, dp: 465, op: 342, colour: 'var(--c-blue)' },
+  { id: 'core', name: 'ERA core', sub: 'hand-made, based on the legacy RINF / ERATV XML', classes: 128, dp: 465, op: 342, colour: 'var(--c-blue)' },
   { id: 'tel', name: 'Telematics', sub: 'TAF, TAP B.5, B.10, B.12, B.14, OSDM', classes: 941, dp: 1520, op: 1165, colour: 'var(--c-amber)' },
   { id: 'netex', name: 'NeTEx', sub: 'kept as a separate bundle', classes: 3451, dp: 4027, op: 3722, colour: 'var(--c-purple)' },
 ]
@@ -32,15 +32,16 @@ const fmt = (n: number) => n.toLocaleString('en-GB')
         <span><b>{{ fmt(p.classes) }}</b> classes</span>
         <span><b>{{ fmt(p.dp + p.op) }}</b> properties</span>
       </div>
-      <div v-if="i > 0" class="ratio">×{{ (total(p) / total(parts[0])).toFixed(1).replace('.0', '') }} the core</div>
+      <div class="ratio" :class="{ ghost: i === 0 }">×{{ (total(p) / total(parts[0])).toFixed(1).replace('.0', '') }} the core</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.scale { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 24px; align-items: end; margin-top: 8px; }
+.scale { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 24px; align-items: start; margin-top: 8px; }
 .col { text-align: center; transition: opacity .6s; }
 .col.hidden { opacity: 0; }
+.ratio.ghost { visibility: hidden; }
 .box-wrap { height: 260px; display: flex; align-items: flex-end; justify-content: center; }
 .box { border: 3px solid; border-radius: 10px; transition: all .6s; }
 .name { font-size: 22px; font-weight: 700; margin-top: 10px; }

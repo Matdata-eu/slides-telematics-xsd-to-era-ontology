@@ -4,7 +4,7 @@ Slidev deck for the RNE Ontology Task Force of 27 October 2026, agenda item 3 "O
 It explains how the TAF / TAP TSI XSDs became the telematics part of ERA ontology v4.0: the choice to convert
 automatically, the [xsd2rdf](https://pypi.org/project/xsd2rdf/) converter and the assumptions it makes, where those
 assumptions break on real TSI schemas (with examples from v4.0.0), why NeTEx is kept separate, and the post-processing
-that repairs the result and connects it to ERA ontology v3.x. Presented on behalf of Bane NOR.
+that repairs the result and connects it to ERA ontology v3.x. The work was done for ERA; it is presented on behalf of Bane NOR.
 
 **Live slides:** https://matdata-eu.github.io/slides-telematics-xsd-to-era-ontology/
 

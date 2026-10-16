@@ -34,7 +34,7 @@ const s = computed(() => Math.max(0, Math.min(2, props.step)))
         <h3>Model the concepts by hand</h3>
         <p>Build a true ontology of the conceptual world, then map the XSD onto it.</p>
         <div class="pros">✔ clean concepts, aligned with the ERA core<br>✔ meaning decided by people</div>
-        <div class="risk">⚠ <b>RDF and XML drift apart.</b> Not every message fits the model, and the mapping must be maintained.</div>
+        <div class="risk">⚠ <b>RDF and XML are maintained separately and can drift apart.</b> The aim is still that every message fits the model, but the mapping must be kept up to date with every XSD release.</div>
       </div>
     </div>
     <div v-if="s >= 2" class="card mt-2 fade">So the quality of the telematics ontology is, by design, the quality of the XSDs, <b>plus whatever post-processing repairs</b>.</div>
