@@ -12,7 +12,7 @@ const s = computed(() => Math.max(0, Math.min(2, props.step)))
 const parts = [
   { id: 'core', name: 'ERA core', sub: 'hand-made, based on the legacy RINF / ERATV XML', classes: 128, dp: 465, op: 342, colour: 'var(--c-blue)' },
   { id: 'tel', name: 'Telematics', sub: 'TAF, TAP B.5, B.10, B.12, B.14, OSDM', classes: 941, dp: 1520, op: 1165, colour: 'var(--c-amber)' },
-  { id: 'netex', name: 'NeTEx', sub: 'kept as a separate bundle', classes: 3451, dp: 4027, op: 3722, colour: 'var(--c-purple)' },
+  { id: 'netex', name: 'NeTEx', sub: 'separate bundle, now in its own netex: namespace', classes: 3451, dp: 4027, op: 3722, colour: 'var(--c-purple)' },
 ]
 const total = (p: typeof parts[number]) => p.classes + p.dp + p.op
 const max = Math.sqrt(total(parts[2]))

@@ -272,43 +272,129 @@ clicks: 2
 The two halves now share a language, but only where someone explicitly decided they mean the same thing: twelve terms.
 1 More alignments are listed as "to discuss" and are not applied in v4.0.
 2 And to be frank: in the ERA ontology repository the checks on these bundles are informational. They report, but they never stop a release.
-This is the bridge to RNE's findings on v4.0.0.
+That is v4.0.0. Next: what we changed since.
 -->
 
 ---
-clicks: 4
+layout: section
 ---
 
-# Since v4.0.0: what is being fixed
+# Since v4.0.0
 
-<div class="since grid grid-cols-2 gap-3 mt-2 text-sm">
+## What the refactor changed
+
+---
+clicks: 2
+---
+
+# The converter, fixed at the source
+
+<div class="rosetta mt-2">
+
+| On TAF, in the telematics bundle | v4.0.0 rc.3 · xsd2rdf 1.6 | now · xsd2rdf 2.1 |
+|---|---|---|
+| nested element read as **"is a"** (`TimingAtLocation ⊑ Timing`) | 105 axioms | **0** |
+| repeatable field declared **functional** | 13 properties | **0** |
+| named simple type made a shared **super-property** (`responsibleRU ⊑ companyCode`) | yes | **0** |
+| an IRI that is a datatype property in one source and an object property in another | 47 | **0** |
+| where does this term come from? | the name only | **XSD component + XML name** |
+
+</div>
+
+<div v-click="1" class="card mt-3 text-sm">Every term now gets <code>dct:source</code>: the W3C designator of the XSD component it was made from, plus the XML name and node kind. On TAF 4.0.0 all <b>3,682</b> designators resolve back to the XSD.</div>
+
+<div v-click="2" class="card mt-2 text-sm">B.12, B.14 and OSDM no longer go through ad-hoc scripts: <b>asn2rdf</b>, <b>jsonschema2rdf</b> and <b>openapi2rdf</b> share xsd2rdf's model and rules. All four are on PyPI.</div>
+
+<!--
+Three of RNE's findings on v4.0.0 were converter behaviour. They are fixed in the converter, not patched afterwards: the nesting, the functional axioms, the super-properties.
+1 The "where does this IRI come from" question now has an answer in the data itself.
+2 And the non-XSD sources follow the same mapping rules, which removed the 47 DP/OP clashes between sources.
+-->
+
+---
+clicks: 2
+---
+
+# Post-processing: from scripts to small rules
+
+<div class="layers mt-4">
+  <div class="layer"><b>10-raw</b><span>converter output, never edited</span></div>
+  <div class="layer"><b>20-clean</b><span>source fixes, no ERA knowledge</span></div>
+  <div class="layer hl"><b>30-harmonised</b><span>align with ERA and across sources</span></div>
+  <div class="layer"><b>40-bundle</b><span>merge, DP/OP suffixes, provenance</span></div>
+  <div class="layer"><b>50-checks</b><span>OWL, SHACL, ERA conflicts, messages</span></div>
+  <div class="layer"><b>60-docs</b><span>Pages site, generated</span></div>
+</div>
+
+<div class="grid grid-cols-3 gap-4 mt-6 text-sm">
 <div v-click="1" class="concept">
 
-### 🔧 A better converter
-xsd2rdf <b>2.1</b> on PyPI. On TAF 4.0.0: <b>0</b> nesting read as "is a", <b>0</b> functional properties, <b>0</b> sub-properties from simple types. Optional `--source-provenance` links every term back to its XSD component and XML name.
+### One rule, one decision
+A SPARQL update or a mapping table, with a header that names its policy and work item.
+
+</div>
+<div v-click="1" class="concept">
+
+### Tested and counted
+Each rule has a fixture (input → expected output) and states how many terms it touches. The build fails when that changes.
 
 </div>
 <div v-click="2" class="concept">
 
-### 🧰 One approach for every format
-B.12, B.14 and OSDM now go through published converters built on the same model: <b>asn2rdf</b>, <b>jsonschema2rdf</b>, <b>openapi2rdf</b>, all on PyPI. Same rules, same <code>DP</code> / <code>OP</code> handling.
-
-</div>
-<div v-click="3" class="concept">
-
-### 📜 Written policies, reviewed in the open
-Post-processing is now a set of small rules, each with a test and a written harmonisation policy. A policy counts as decided only once its work item is reviewed and accepted.
-
-</div>
-<div v-click="4" class="concept">
-
-### 🗂️ NeTEx in its own namespace
-NeTEx moves out of the <code>era:</code> namespace into <code>http://data.europa.eu/949/netex/</code>. It is converted and tidied, but not harmonised with ERA.
+### Traceable
+Every rename lands in the OWL, SHACL, SKOS and a provenance file. The docs are generated from the rules, so they can't drift.
 
 </div>
 </div>
 
-<div v-click="4" class="card warn-card mt-3 text-sm">To be frank: the checks still report open issues, such as case-only name clashes and properties that differ from the ERA core. The rename list grew, but it is still people who decide what means the same.</div>
+<style>
+.layers { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.layer { background: var(--c-surface); border: 1px solid var(--c-stroke); border-top: 4px solid var(--c-blue); border-radius: 8px; padding: 8px; text-align: center; font-size: 0.8rem; line-height: 1.25; }
+.layer.hl { border-top-color: var(--c-amber); background: var(--c-amber-bg); }
+.layer b { display: block; font-size: 0.95rem; margin-bottom: 4px; }
+.layer span { color: var(--c-ink-mod); }
+</style>
+
+<!--
+In v4.0 the post-processing was a set of scripts and a big list of IRIs to replace. It is now a pipeline of numbered layers. The raw converter output is never edited; a problem in the source gets a work item on the XSD.
+1 Each rule is small, has an example that doubles as its test, and says how much it should change.
+2 And everything a rule does can be traced: the documentation site is built from the rules themselves.
+-->
+
+---
+clicks: 3
+---
+
+# Meaning added by people: four review sessions
+
+<div class="grid grid-cols-2 gap-3 mt-2 text-sm since">
+<div class="concept">
+
+### 📍 LocationIdent is a reference, not a place
+It no longer becomes `era:PrimaryLocation`. It points to a primary or subsidiary location by the IRI RINF already mints (`era:refersToLocation`).
+
+</div>
+<div v-click="1" class="concept">
+
+### 🔗 Reuse ERA core, only where it fits
+An ERA core term is reused only when its domain and range fit. Every link to the core is flagged with `era:coreInterface`.
+
+</div>
+<div v-click="2" class="concept">
+
+### 📐 Standard patterns
+Periods as OWL-Time, units with `era:unitOfMeasure` (QUDT), points as GeoSPARQL WKT, one `era:Message` superclass for the 59 message roots.
+
+</div>
+<div v-click="2" class="concept">
+
+### 🏷️ Codes become code lists
+Code meanings hidden in the documentation become SKOS concepts. Free-text code fields point to an existing list when there is one.
+
+</div>
+</div>
+
+<div v-click="3" class="card warn-card mt-3 text-sm">Each decision is written down as a <b>harmonisation policy</b> (30 so far). A policy counts as accepted only once the ontology owner closes its work item. Today they are all <b>awaiting acceptance</b>.</div>
 
 <style>
 .since .concept { padding: 8px 12px; line-height: 1.35; }
@@ -317,11 +403,49 @@ NeTEx moves out of the <code>era:</code> namespace into <code>http://data.europa
 </style>
 
 <!--
-v4.0.0 is what you have today. This is what has happened since, in the telematics-ontology repository. None of it is in a release yet.
-1 xsd2rdf 2.1. Three of RNE's findings on v4.0.0 are converter behaviour, and they are gone on TAF 4.0.0. Provenance answers the "where does this IRI come from" question.
-2 The ASN.1, JSON Schema and OpenAPI sources had their own small scripts. They now have their own converters, on the same model as xsd2rdf.
-3 The harmonisation is no longer a big YAML file. Each rule is small and tested, and each decision is a written policy that is reviewed through a work item before it counts.
-4 NeTEx gets its own namespace, so its strange structure doesn't end up in era:. And there is still work: the checks are not clean yet.
+This is where the rename list of v4.0 went. We sat down with the worklists, source by source, and decided term by term.
+The key one for this group: LocationIdent. In v4.0 it was renamed to PrimaryLocation, which made a track a primary location. Now it is what the XSD says: a reference to a location, resolved to the IRI RINF already has.
+1 Reuse of ERA core is a rule now, not a habit.
+2 Common patterns instead of one-off properties.
+3 And nothing is final until ERA accepts it. That is deliberate.
+-->
+
+---
+clicks: 3
+---
+
+# Where it stands
+
+<div class="grid grid-cols-3 gap-4 mt-4 text-center">
+<div class="ans">
+<div class="sub">ERA conflict checks, non-NeTEx</div>
+<div class="text-2xl font-bold mt-1">157 → 3</div>
+<div class="sub">errors (warnings 631 → 8)</div>
+</div>
+<div v-click="1" class="ans">
+<div class="sub">example messages that fit the model</div>
+<div class="text-2xl font-bold mt-1">22 → 98</div>
+<div class="sub">of 146 (RINF lookup mocked)</div>
+</div>
+<div v-click="2" class="ans">
+<div class="sub">NeTEx, own namespace <code>949/netex/</code></div>
+<div class="text-2xl font-bold mt-1">35,423</div>
+<div class="sub">IRIs moved out of <code>era:</code>, 112 clashes gone</div>
+</div>
+</div>
+
+<div v-click="3" class="card warn-card mt-6 text-sm">
+
+**Still open, to be frank:** case-only clashes (`trainID` / `trainId`, `VAT` / `Vat`); `subsidiaryLocationCode` is a link here but a value in ERA core; no example messages yet for B.12, B.14 and OSDM; the policies still need acceptance; and none of this is in a release yet. The merge target is ERA core **v3.3.4**.
+
+</div>
+
+<!--
+Numbers from the telematics-ontology pipeline on main.
+The checks went from 157 errors on the first refactored bundle, before the review sessions, to 3.
+1 Message validation went from 22 to 98 of the 146 example messages. This is option A from the start of the talk: every message must still fit the model.
+2 NeTEx moved to its own namespace. It is converted and tidied, not harmonised.
+3 And what is still open. This is the bridge to RNE's findings.
 -->
 
 ---
@@ -333,7 +457,7 @@ class: text-center
 
 <div class="grid grid-cols-3 gap-6 mt-8 text-left">
 <div class="tk">🔁<br><b>The converter is a translator, not an analyst.</b><br>It is faithful to the XSD, including its inconsistencies. That was the choice, and it has a price.</div>
-<div class="tk">🧠<br><b>Meaning has to be added by people.</b><br>The rename list is where that happens today. It covers 12 shared terms; the rest is still to discuss.</div>
+<div class="tk">🧠<br><b>Meaning has to be added by people.</b><br>In v4.0 that was a rename list of 12 shared terms. Now it is review sessions and written policies, each accepted through a work item.</div>
 <div class="tk">✍️<br><b>Better XSDs give a better ontology.</b><br>Name elements after what they are, one name per concept, extension only for "is a". Or curate on top.</div>
 </div>
 
