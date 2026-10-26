@@ -3,8 +3,8 @@
 Slidev deck for the RNE Ontology Task Force of 27 October 2026, agenda item 3 "Ontology 4.0 – Telematics Extension".
 It explains how the TAF / TAP TSI XSDs became the telematics part of ERA ontology v4.0: the choice to convert
 automatically, the [xsd2rdf](https://pypi.org/project/xsd2rdf/) converter and the assumptions it makes, where those
-assumptions break on real TSI schemas (with examples from v4.0.0), why NeTEx is kept separate, and the post-processing
-that repairs the result and connects it to ERA ontology v3.x. A last section shows what the refactor of the telematics pipeline changed since v4.0.0. The work was done for ERA; it is presented on behalf of Bane NOR.
+assumptions break on real TSI schemas (with examples from the v4.0 release candidates), why NeTEx is kept separate, and the post-processing
+that repairs the result and connects it to ERA ontology v3.x. v4.0.0 is not released yet; a last section shows what the refactor of the telematics pipeline changes after the release candidates. The work was done for ERA; it is presented on behalf of Bane NOR.
 
 **Live slides:** https://matdata-eu.github.io/slides-telematics-xsd-to-era-ontology/
 
@@ -46,7 +46,7 @@ Every component takes a `step` prop driven by `$clicks`.
 
 ## Sources of the numbers
 
-All counts come from tag `v4.0.0` of the [ERA ontology](https://gitlab.com/era-europa-eu/public/interoperable-data-programme/era-ontology/era-ontology)
+All counts come from the release-candidate tag `v4.0.0` (v4.0.0 itself is not released yet) of the [ERA ontology](https://gitlab.com/era-europa-eu/public/interoperable-data-programme/era-ontology/era-ontology)
 (`era-ontology/_core.ttl`, `domains/telematics/artefacts/dist/{telematics,netex}/ontology.ttl`), counted with rdflib
 on named `owl:Class`, `owl:DatatypeProperty` and `owl:ObjectProperty` subjects. The XSD examples come from
 `taf_cat_complete.xsd` (TAF TSI) and the converter behaviour from xsd2rdf `main`. The post-processing steps are those
