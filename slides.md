@@ -51,7 +51,7 @@ clicks: 2
 <!--
 The ERA core: RINF, ERATV and the rest, modelled by hand. About 900 classes and properties.
 1 The telematics extension: TAF, TAP B.5 and B.10 from XSD, plus B.12 (ASN.1), B.14 (JSON) and OSDM (OpenAPI). About four times the core.
-2 NeTEx, kept as a separate bundle: twelve times the core.
+2 NeTEx, kept as a separate bundle: twelve times the core. In v4.0.0 it still sits in the era: namespace; since then it is moving to its own namespace, netex:.
 Nobody models this by hand in a reasonable time. That is why a converter was needed.
 -->
 
@@ -276,6 +276,55 @@ This is the bridge to RNE's findings on v4.0.0.
 -->
 
 ---
+clicks: 4
+---
+
+# Since v4.0.0: what is being fixed
+
+<div class="since grid grid-cols-2 gap-3 mt-2 text-sm">
+<div v-click="1" class="concept">
+
+### 🔧 A better converter
+xsd2rdf <b>2.1</b> on PyPI. On TAF 4.0.0: <b>0</b> nesting read as "is a", <b>0</b> functional properties, <b>0</b> sub-properties from simple types. Optional `--source-provenance` links every term back to its XSD component and XML name.
+
+</div>
+<div v-click="2" class="concept">
+
+### 🧰 One approach for every format
+B.12, B.14 and OSDM now go through published converters built on the same model: <b>asn2rdf</b>, <b>jsonschema2rdf</b>, <b>openapi2rdf</b>, all on PyPI. Same rules, same <code>DP</code> / <code>OP</code> handling.
+
+</div>
+<div v-click="3" class="concept">
+
+### 📜 Written policies, reviewed in the open
+Post-processing is now a set of small rules, each with a test and a written harmonisation policy. A policy counts as decided only once its work item is reviewed and accepted.
+
+</div>
+<div v-click="4" class="concept">
+
+### 🗂️ NeTEx in its own namespace
+NeTEx moves out of the <code>era:</code> namespace into <code>http://data.europa.eu/949/netex/</code>. It is converted and tidied, but not harmonised with ERA.
+
+</div>
+</div>
+
+<div v-click="4" class="card warn-card mt-3 text-sm">To be frank: the checks still report open issues, such as case-only name clashes and properties that differ from the ERA core. The rename list grew, but it is still people who decide what means the same.</div>
+
+<style>
+.since .concept { padding: 8px 12px; line-height: 1.35; }
+.since .concept h3 { font-size: 1.05rem; margin: 0 0 4px; }
+.since .concept p { margin: 0; }
+</style>
+
+<!--
+v4.0.0 is what you have today. This is what has happened since, in the telematics-ontology repository. None of it is in a release yet.
+1 xsd2rdf 2.1. Three of RNE's findings on v4.0.0 are converter behaviour, and they are gone on TAF 4.0.0. Provenance answers the "where does this IRI come from" question.
+2 The ASN.1, JSON Schema and OpenAPI sources had their own small scripts. They now have their own converters, on the same model as xsd2rdf.
+3 The harmonisation is no longer a big YAML file. Each rule is small and tested, and each decision is a written policy that is reviewed through a work item before it counts.
+4 NeTEx gets its own namespace, so its strange structure doesn't end up in era:. And there is still work: the checks are not clean yet.
+-->
+
+---
 layout: center
 class: text-center
 ---
@@ -307,6 +356,7 @@ Mathias Vanden Auweele · Bane NOR (work done for ERA)<br>
 
 <div class="mt-6 text-base">
 xsd2rdf on PyPI: <a href="https://pypi.org/project/xsd2rdf/" class="font-bold">pypi.org/project/xsd2rdf</a><br>
+Also on PyPI: <a href="https://pypi.org/project/asn2rdf/">asn2rdf</a> · <a href="https://pypi.org/project/jsonschema2rdf/">jsonschema2rdf</a> · <a href="https://pypi.org/project/openapi2rdf/">openapi2rdf</a><br>
 ERA ontology: <a href="https://gitlab.com/era-europa-eu/public/interoperable-data-programme/era-ontology/era-ontology" class="font-bold">gitlab.com/era-europa-eu/…/era-ontology</a>
 </div>
 

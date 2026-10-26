@@ -24,8 +24,9 @@ Presented on behalf of Bane NOR; the work itself was done for ERA.
 | 13 | Section: post-processing | | |
 | 14 | Six steps after the converter | Convert per source, rename to v3.x terms, tidy code lists, add ERA cross-links, remove DP/OP suffixes, merge + parameter groups + checks | `PostProcessSteps` |
 | 15 | How much is connected to v3.x? | 12 shared terms; alignments still "to discuss"; checks in the ERA repo are informational only | `OverlapVenn` |
-| 16 | Three take-aways | Translator not analyst · meaning added by people · better XSDs give a better ontology | |
-| 17 | Questions | | |
+| 16 | Since v4.0.0 | xsd2rdf 2.1 (no nesting-as-subclass, no functional, no simple-type sub-properties on TAF 4.0.0; source provenance); asn2rdf, jsonschema2rdf, openapi2rdf on PyPI; small tested rules with written policies, accepted through work items; NeTEx in its own namespace `http://data.europa.eu/949/netex/`; checks not clean yet | cards |
+| 17 | Three take-aways | Translator not analyst · meaning added by people · better XSDs give a better ontology | |
+| 18 | Questions | | |
 
 ## Numbers (tag `v4.0.0`, named subjects, rdflib)
 
