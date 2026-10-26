@@ -38,7 +38,7 @@ const open = [
       <div class="lh">Same IRI, declared in both. Possible because telematics uses the <code>era:</code> namespace and the rename list:</div>
       <div class="tags"><code v-for="t in shared" :key="t">{{ t }}</code></div>
       <div v-if="s >= 1" class="fade">
-        <div class="lh mt">Still <b>"to discuss"</b>, not applied in v4.0:</div>
+        <div class="lh mt">Still <b>"to discuss"</b>, not applied in the release candidates:</div>
         <table class="td">
           <tr v-for="r in open" :key="r[1]"><td><code>{{ r[0] }}</code></td><td>→</td><td><code>{{ r[1] }}</code></td></tr>
         </table>
