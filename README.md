@@ -39,7 +39,7 @@ Every component takes a `step` prop driven by `$clicks`.
 | `PipelineFlow` | The pipeline in one picture | XSD → SHACL → OWL/SKOS → post-processing → bundles, generic vs ERA-specific |
 | `XsdToRdf` | A form becomes a dictionary | The TAF `LocationIdent` type next to its SHACL and OWL, line by line |
 | `SynonymNotes` | One concept, three names | Three XSD names for one concept become three properties |
-| `RoleHub` | Names for roles, not for things | 27 properties pointing to `era:PrimaryLocation`, tracks among them, and 8 subclasses |
+| `RoleHub` | Names for roles, not for things | 27 properties pointing to `LocationIdent`, tracks among them, its link to the RINF location (`era:refersToLocation`), and 8 subclasses |
 | `NetexLadder` | NeTEx | How much of NeTEx is schema structure, and its 14-level "is a" chain |
 | `PostProcessSteps` | Six steps after the converter | The post-processing steps with a real before → after per step |
 | `OverlapVenn` | How much of it is connected to v3.x? | The 12 terms shared with the ERA core, and what is still to discuss |

@@ -17,7 +17,7 @@ const steps = [
   {
     n: 2, icon: '🔗', title: 'Rename to ERA v3.x terms', file: 'iris-to-replace.csv',
     what: 'A hand-made list maps XSD names onto existing ERA ontology terms. This is where telematics meets RINF.',
-    before: 'era:LocationIdent', after: 'era:PrimaryLocation',
+    before: 'era:locationPrimaryCode', after: 'era:primaryLocationCode',
   },
   {
     n: 3, icon: '📚', title: 'Tidy the code lists', file: 'common.py',
