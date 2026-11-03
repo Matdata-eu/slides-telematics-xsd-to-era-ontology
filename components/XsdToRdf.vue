@@ -15,7 +15,6 @@ const xsd: L[] = [
   { t: '  Railway or Customer Location', g: 4, i: 1 },
   { t: '</xs:documentation>', g: 4, i: 1 },
   { t: '<xs:sequence>', i: 1 },
-  { t: '<xs:element ref="CountryCodeISO"/>', g: 2, i: 2 },
   { t: '<xs:element ref="LocationPrimaryCode"/>', g: 2, i: 2 },
   { t: '<xs:element ref="PrimaryLocationName"', g: 3, i: 2 },
   { t: '            minOccurs="0"/>', g: 3, i: 2 },
