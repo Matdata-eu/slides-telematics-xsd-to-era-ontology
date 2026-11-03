@@ -179,9 +179,9 @@ clicks: 3
 <!--
 This is the key slide.
 The XSD reuses one type, LocationIdent, for many elements, and names those elements after their role in a message: section from, section to, delay location, destination.
-1 Post-processing renames LocationIdent to era:PrimaryLocation, to connect to RINF. Now 27 properties point to a primary location.
-2 Five of them are about a track. The XSD documentation says so: "the track ID on which the train runs". In the ontology, a track is now a primary location.
-3 The XSD also uses extension to reuse fields. The converter reads that as "is a". Is the origin of a journey section a kind of location, the way a station is? No. It's a location playing a role. The XSD never says that, so the converter can't know.
+1 The release candidates renamed LocationIdent to era:PrimaryLocation, which made every one of these roles a primary location. The refactor keeps LocationIdent for what it is: a reference in a message. 27 properties point to it, and it points to the primary or subsidiary location by the IRI RINF already mints, with era:refersToLocation.
+2 Five of them are about a track. The XSD documentation says so: "the track ID on which the train runs". But a location reference can only point to a primary or subsidiary location. There is no track to point to.
+3 The XSD also uses extension to reuse fields. The converter reads that as "is a", so there are 8 subclasses of LocationIdent. Is a station a kind of location reference? Is the origin of a journey section? No: the origin is a location playing a role. The XSD never says that, so the converter can't know.
 Link to agenda item 5, primary location attachment.
 -->
 
@@ -189,33 +189,51 @@ Link to agenda item 5, primary location attachment.
 
 # Same name, different meaning
 
-<div class="grid grid-cols-2 gap-6 mt-4">
+<div class="text-base mt-1">The converter gives each element <b>name</b> one IRI. That goes wrong when one name means two things.</div>
+
+<div class="grid grid-cols-2 gap-5 mt-4 samename">
 <div class="prob">
 
-### 🧩 Different structure
-`author` is a plain name in `Book`, but a whole `Person` in `Article`. One name, two kinds of property.
+### 🧩 One name, two kinds
 
-<div class="text-sm mt-2">The converter adds <code>DP</code> / <code>OP</code> to keep them apart. Post-processing turns real clashes into <code>…Value</code> and <code>…Reference</code>, for example <code>era:tariffValue</code> and <code>era:tariffReference</code>.</div>
-
-<div class="text-xs muted mt-2">Example from the xsd2rdf README; tariff from the v4.0 release candidates.</div>
+<table>
+<tr><th>XSD</th><td><code>author</code> is a plain text in <code>Book</code>, but a whole <code>Person</code> in <code>Article</code></td></tr>
+<tr><th>Converter</th><td>two properties, told apart by a suffix: <code>authorDP</code> (a value) and <code>authorOP</code> (a link)</td></tr>
+<tr><th>Release candidates</th><td>suffix removed again; a real clash renamed by hand, e.g. <code>era:tariffValue</code> / <code>era:tariffReference</code></td></tr>
+<tr><th>Refactor</th><td>suffix removed only where a name has <b>one kind</b> after merging all sources; the pairs left are reviewed one by one</td></tr>
+</table>
 
 </div>
 <div class="prob">
 
-### 🎲 Different definitions
-NeTEx declares `AccessModes` separately in **6 files**, each with its own documentation. They all collapse onto one property.
+### 📚 One name, many definitions
 
-<div class="text-sm mt-2">Which definition wins changed between two runs on <b>identical input</b>: "Allowed MODEs to access SITE ELEMENT." in one, "MODEs of access which may used at associated place…" in the next.</div>
-
-<div class="text-xs muted mt-2">xsd2rdf issue #27: 16 properties differ between runs.</div>
+<table>
+<tr><th>XSD</th><td>NeTEx declares <code>AccessModes</code> inline in <b>6 files</b>, each with its own documentation</td></tr>
+<tr><th>Converter</th><td>one property for all six</td></tr>
+<tr><th>xsd2rdf 1.x</th><td>keeps <b>one</b> of the six definitions, and which one changed between two runs on the same input (16 properties)</td></tr>
+<tr><th>xsd2rdf 2.x</th><td>keeps <b>all</b> local definitions, the same on every run. Still one property: splitting it is a human decision</td></tr>
+</table>
 
 </div>
 </div>
 
-<div v-click class="card mt-6 text-lg">Same root cause every time: the converter takes the <b>name</b> as the <b>identity of the concept</b>. In a schema, a name only has to be unique in its context.</div>
+<div v-click class="card mt-4 text-base">Same root cause: the converter takes the <b>name</b> as the <b>identity of the concept</b>. In a schema, a name only has to be unique in its context.</div>
+
+<style>
+.samename .prob { padding: 12px 14px; }
+.samename h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.samename table { font-size: 0.8rem; line-height: 1.3; margin: 0; }
+.samename th { width: 7.5rem; text-align: left; vertical-align: top; color: var(--c-ink-mod); font-weight: 600; padding: 4px 8px 4px 0 !important; border: none; }
+.samename td { padding: 4px 0 !important; border: none; }
+.samename tr + tr th, .samename tr + tr td { border-top: 1px solid var(--c-stroke); }
+.samename code { font-size: 0.72rem; }
+</style>
 
 <!--
-Two quick ones. Both come from the same root cause: the name is taken as the identity of the concept.
+Two quick ones, both from the same root cause: the name is taken as the identity of the concept.
+Left: the same name is a value in one place and a link in another. The converter keeps them apart with a DP / OP suffix. In the release candidates post-processing removed the suffix again and renamed real clashes by hand. In the refactor the suffix only goes where the name has one kind across all sources; the pairs that remain get reviewed.
+Right: NeTEx declares the same element in six files with six definitions. Older xsd2rdf kept one of them, and not always the same one (xsd2rdf issue #27). xsd2rdf 2 keeps all of them, deterministically. But it is still one property; whether those are six concepts is for a person to decide.
 -->
 
 ---
@@ -253,7 +271,7 @@ clicks: 6
 <!--
 All of this is in the telematics-ontology repository, run after xsd2rdf.
 1 Each source is converted on its own, into the ERA namespace, with the technical suffixes on.
-2 The rename list: this is where telematics meets RINF. LocationIdent becomes PrimaryLocation. Note: this is also what created the 27 arrows we saw.
+2 The rename list: this is where telematics meets RINF, for example locationPrimaryCode becomes era:primaryLocationCode. In the release candidates the list also renamed LocationIdent to PrimaryLocation; the refactor dropped that row (see the 27 arrows on slide 10).
 3 The code lists get readable, stable names.
 4 Every property gets the same annotations the ERA core uses: its code list and its validation rule.
 5 The suffixes go, across all sources at once. A real clash becomes Value and Reference, and the step fails if any clash would remain.

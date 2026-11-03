@@ -18,8 +18,8 @@ Presented on behalf of Bane NOR; the work itself was done for ERA.
 | 7 | The assumptions | 12 mapping rules, 5 safe and 7 risky, each risky one with another plausible reading; enumerations always become a new SKOS list, even when an ERA list exists | table |
 | 8 | Section: garbage in, garbage out | | |
 | 9 | One concept, three names | `LocationPrimaryName`, `PrimaryLocationName`, `PrimaryLocationNameASCII` → 3 properties | `SynonymNotes` |
-| 10 | Names for roles, not for things | 27 properties point to `era:PrimaryLocation`, 5 of them tracks; 8 subclasses, only `Station` is a real kind | `RoleHub` |
-| 11 | Same name, different meaning | `author` (DP/OP), NeTEx `AccessModes` (definition changes between runs, issue #27) | cards |
+| 10 | Names for roles, not for things | 27 properties point to `LocationIdent`, 5 of them tracks; the release candidates renamed it to `era:PrimaryLocation`, the refactor keeps it as a reference with `era:refersToLocation` to a primary or subsidiary location; 8 subclasses, none a real kind | `RoleHub` |
+| 11 | Same name, different meaning | One name, two kinds (`author`, DP/OP suffix; release candidates vs refactor) and one name, many definitions (NeTEx `AccessModes`; xsd2rdf 1.x vs 2.x) | two tables |
 | 12 | NeTEx | An ontology written in a schema language: 74 % of 3,451 classes are "…Structure", 14-level chain, `Quay` has no superclass. Kept separate | `NetexLadder` |
 | 13 | Section: post-processing | | |
 | 14 | Six steps after the converter | Convert per source, rename to v3.x terms, tidy code lists, add ERA cross-links, remove DP/OP suffixes, merge + parameter groups + checks | `PostProcessSteps` |
@@ -43,5 +43,5 @@ The "towards v4.0.0" numbers come from the telematics-ontology pipeline on `main
 | NeTEx bundle | 3,451 | 4,027 | 3,722 |
 
 - Shared `era:` terms between core and telematics: 12 (`PrimaryLocation`, `SubsidiaryLocation`, `Vehicle`, `primaryLocationName`, `freightFlag`, `passengerFlag`, `containerHandlingFlag`, `handoverPointFlag`, `direction`, `letterMarking`, `faxNumber`, `scope`).
-- Properties with range `era:PrimaryLocation`: 27. Subclasses of `era:PrimaryLocation`: 8.
+- Properties with range `era:PrimaryLocation`: 27. Subclasses of `era:PrimaryLocation`: 8. (Refactor: the same 27 properties and 8 subclasses, on `era:LocationIdent`.)
 - NeTEx: 2,552 of 3,451 classes end in "Structure" (783 RefStructure, 749 RelStructure, 556 VersionStructure).
